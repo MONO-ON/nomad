@@ -1,0 +1,9 @@
+{
+  "name": "typechain",
+  "version": "1.0.0",
+  "description": "Learning Typescript by making Blockchain with it",
+  "main": "index.js",
+  "repository": "https://github.com/MONO-ON/nomad",
+  "author": "mono",
+  "license": "MIT"
+}
