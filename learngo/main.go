@@ -1,13 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"net/http"
 
-	"github.com/MONO-ON/nomad/learngo/accounts"
+	"github.com/labstack/echo"
 )
 
+func handleHome(c echo.Context) error {
+	return c.String(http.StatusOK, "Hello, World!")
+}
+
 func main() {
-	account := accounts.NewAccount("mono")
-	account.Deposit(10)
-	fmt.Println(account)
+	e := echo.New()
+	e.GET("/", handleHome)
+	e.Logger.Fatal(e.Start(":1323"))
 }
