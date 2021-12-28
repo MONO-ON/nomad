@@ -69,10 +69,10 @@ func getPage(page int, url string, mainC chan<- []extractedJob) {
 
 func extractJob(card *goquery.Selection, c chan<- extractedJob) {
 	id, _ := card.Attr("data-jk")
-	title := cleanString(card.Find(".jobTitle>span").Text())
-	location := cleanString(card.Find(".companyLocation").Text())
-	salary := cleanString(card.Find(".salary-snippet").Text())
-	summary := cleanString(card.Find(".job-snippet").Text())
+	title := CleanString(card.Find(".jobTitle>span").Text())
+	location := CleanString(card.Find(".companyLocation").Text())
+	salary := CleanString(card.Find(".salary-snippet").Text())
+	summary := CleanString(card.Find(".job-snippet").Text())
 	c <- extractedJob{
 		id:       id,
 		title:    title,
@@ -81,7 +81,8 @@ func extractJob(card *goquery.Selection, c chan<- extractedJob) {
 		summary:  summary}
 }
 
-func cleanString(str string) string {
+// CleanString cleans a string
+func CleanString(str string) string {
 	return strings.Join(strings.Fields(strings.TrimSpace(str)), " ")
 }
 
@@ -106,6 +107,8 @@ func getPages(url string) int {
 func writeJobs(jobs []extractedJob) {
 	file, err := os.Create("jobs.csv")
 	checkErr(err)
+	utf8bom := []byte{0xEF, 0xBB, 0xBF} // csv파일 한글 깨지는거 방지
+	file.Write(utf8bom)                 // csv파일 한글 깨지는거 방지
 
 	w := csv.NewWriter(file)
 	defer w.Flush()
